@@ -11,14 +11,57 @@ datasource db {
 }
 
 model User {
-  id       Int     @id @default(autoincrement())
-  email    String  @unique
-  name     String?
-  password String
-  role     Role    @default(USER)
+  id            String       @id @default(cuid())
+  email         String       @unique
+  firstName     String
+  middleName    String?
+  lastName      String
+  password      String
+  role          UserRole
+  studentData   StudentData? @relation(fields: [studentDataId], references: [id])
+  adminData     AdminData?   @relation(fields: [adminDataId], references: [id])
+  curatorData   CuratorData? @relation(fields: [curatorDataId], references: [id])
+  studentDataId Int?
+  adminDataId   Int?
+  curatorDataId Int?
 }
 
-enum Role {
-  USER
+enum UserRole {
+  STUDENT
   ADMIN
+  CURATOR
+}
+
+model StudentData {
+  id             Int     @id @default(autoincrement())
+  userId         Int     @unique
+  avatarUrl      String? @map("avatar_url")
+  additionalInfo String?
+  User           User[]
+}
+
+model AdminData {
+  id     Int    @id @default(autoincrement())
+  userId Int    @unique
+  User   User[]
+}
+
+model CuratorData {
+  id     Int    @id @default(autoincrement())
+  userId Int    @unique
+  User   User[]
+}
+
+enum FluoroStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
+
+model Fluorography {
+  id        Int          @id @default(autoincrement())
+  studentId Int
+  date      DateTime
+  status    FluoroStatus
+  file_url  String       @map("file_url")
 }
