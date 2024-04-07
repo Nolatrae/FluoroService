@@ -11,7 +11,7 @@ export class UserService {
 	async getUsers() {
 		return this.prisma.user.findMany({
 			select: {
-				name: true,
+				firstName: true,
 				email: true,
 				id: true,
 				password: false,
@@ -19,7 +19,7 @@ export class UserService {
 		})
 	}
 
-	async getById(id: number) {
+	async getById(id: string) {
 		return this.prisma.user.findUnique({
 			where: {
 				id,
@@ -36,13 +36,13 @@ export class UserService {
 	}
 
 	async create(dto: AuthDto) {
-		const users = await this.getUsers()
-
 		const user = {
-			id: users.length + 1,
 			email: dto.email,
-			name: dto.email,
 			password: await hash(dto.password),
+			firstName: dto.firstName,
+			middleName: dto.middleName,
+			lastName: dto.lastName,
+			role: dto.role,
 		}
 
 		return this.prisma.user.create({

@@ -80,7 +80,7 @@ export class AuthController {
 
 	@Auth()
 	@Get('profile')
-	async getProfile(@CurrentUser('id') id: number) {
+	async getProfile(@CurrentUser('id') id: string) {
 		return this.userService.getById(id)
 	}
 

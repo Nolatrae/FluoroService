@@ -3,7 +3,7 @@ import { Role } from '@prisma/client'
 import { OnlyAdminGuard } from '../guards/admin.guard'
 import { JwtAuthGuard } from '../guards/jwt.guard'
 
-export const Auth = (role: Role = Role.USER) => {
+export const Auth = (role: Role = Role.STUDENT) => {
 	if (role === Role.ADMIN) {
 		return applyDecorators(UseGuards(JwtAuthGuard, OnlyAdminGuard))
 	}
