@@ -1,4 +1,5 @@
 import { NestFactory } from '@nestjs/core'
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import * as cookieParser from 'cookie-parser'
 import { AppModule } from './app.module'
 
@@ -12,6 +13,15 @@ async function bootstrap() {
 		credentials: true,
 		exposedHeaders: 'set-cookie',
 	})
+
+	const options = new DocumentBuilder()
+		.setTitle('Fluorography API')
+		.setDescription('API for managing fluorography data')
+		.setVersion('1.0')
+		.addTag('fluorography')
+		.build()
+	const document = SwaggerModule.createDocument(app, options)
+	SwaggerModule.setup('docs', app, document)
 
 	await app.listen(4200)
 }
