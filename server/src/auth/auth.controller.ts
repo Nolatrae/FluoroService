@@ -15,6 +15,7 @@ import { AuthService } from './auth.service'
 import { Auth } from './decorators/auth.decorator'
 import { CurrentUser } from './decorators/user.decorator'
 import { AuthDto } from './dto/auth.dto'
+import { LoginDto } from './dto/login.dto'
 import { UserService } from './user.service'
 
 @Controller('auth')
@@ -27,7 +28,10 @@ export class AuthController {
 	@UsePipes(new ValidationPipe())
 	@HttpCode(200)
 	@Post('login')
-	async login(@Body() dto: AuthDto, @Res({ passthrough: true }) res: Response) {
+	async login(
+		@Body() dto: LoginDto,
+		@Res({ passthrough: true }) res: Response
+	) {
 		const { refreshToken, ...response } = await this.authService.login(dto)
 
 		this.authService.addRefreshTokenToResponse(res, refreshToken)

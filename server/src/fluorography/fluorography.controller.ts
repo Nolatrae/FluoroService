@@ -29,6 +29,7 @@ export class FluorographyController {
 		@UploadedFile() file: Express.Multer.File,
 		@Body() dto: FluorographyDto
 	) {
+		console.log(id, file, dto)
 		return this.fluorographyService.createUserFluorography(id, file, dto)
 	}
 

@@ -14,8 +14,10 @@ export class FluorographyService {
 		dto: FluorographyDto
 	) {
 		if (!file.mimetype.startsWith('image')) {
+			// console.log(file.size)
 			throw new BadRequestException('Only images are allowed')
 		}
+		// console.log(file)
 
 		const filename = `${userId}_${new Date().getTime()}${path.extname(file.originalname)}`
 
