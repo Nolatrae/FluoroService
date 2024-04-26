@@ -1,3 +1,4 @@
+import Table from '@/components/ui/table/Table'
 import { API_URL } from '@/constants'
 import { EnumTokens } from '@/services/auth.service'
 import { IUser } from '@/types/types'
@@ -25,14 +26,18 @@ const fetchUser = async () => {
 
 export default async function AdminPage() {
 	const users = await fetchUser()
+	console.log(users)
 
 	return (
-		<div>
-			{users?.length ? (
-				users.map(user => <div key={user.id}>{user.email}</div>)
-			) : (
-				<p>Not found!</p>
-			)}
-		</div>
+		<>
+			<div className='overflow-auto'>
+				<Table data={users} adminMenu={true} />
+			</div>
+			{/* <div className='flex justify-between w-full'>
+				<div className=''>Egor</div>
+				<div className=''>Egor</div>
+				<div className=''>Egor</div>
+			</div> */}
+		</>
 	)
 }
