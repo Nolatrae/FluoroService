@@ -6,7 +6,7 @@ import { IMenuItem } from './menu.interface'
 export const MENU: IMenuItem[] = [
 	{
 		icon: LayoutList,
-		link: '/',
+		link: '/list',
 		name: 'List',
 		role: [UserRole.Admin],
 	},
@@ -24,8 +24,8 @@ export const MENU: IMenuItem[] = [
 	},
 	{
 		icon: Shield,
-		link: '/send',
-		name: 'Send fluoro',
+		link: '/admin',
+		name: 'Admin panel',
 		role: [UserRole.Admin],
 	},
 ]
