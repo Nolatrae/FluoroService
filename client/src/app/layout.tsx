@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Fira_Mono } from 'next/font/google'
 
+import DashboardLayout from '@/components/dashboard-layout/DashboardLayout'
 import './globals.css'
 import { Providers } from './Providers'
 
@@ -19,7 +20,9 @@ export default function RootLayout({
 	return (
 		<html lang='en'>
 			<body className={inter.className}>
-				<Providers>{children}</Providers>
+				<Providers>
+					<DashboardLayout>{children}</DashboardLayout>
+				</Providers>
 			</body>
 		</html>
 	)

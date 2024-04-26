@@ -7,8 +7,6 @@ import type { PropsWithChildren } from 'react'
 export default async function Layout({ children }: PropsWithChildren<unknown>) {
 	const user = await getServerAuth()
 
-	console.log(user)
-
 	if (user?.isLoggedIn)
 		return redirect(user.isAdmin ? ADMIN_PAGES.HOME : PUBLIC_PAGES.HOME)
 

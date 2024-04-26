@@ -9,6 +9,7 @@ import { Role } from '@prisma/client'
 import { verify } from 'argon2'
 import { Response } from 'express'
 import { AuthDto } from './dto/auth.dto'
+import { LoginDto } from './dto/login.dto'
 import { UserService } from './user.service'
 
 @Injectable()
@@ -21,7 +22,7 @@ export class AuthService {
 		private userService: UserService
 	) {}
 
-	async login(dto: AuthDto) {
+	async login(dto: LoginDto) {
 		const { password, ...user } = await this.validateUser(dto)
 		const tokens = await this.issueTokens(user.id, user.role)
 
@@ -74,7 +75,7 @@ export class AuthService {
 		return { accessToken, refreshToken }
 	}
 
-	private async validateUser(dto: AuthDto) {
+	private async validateUser(dto: LoginDto) {
 		const user = await this.userService.getByEmail(dto.email)
 
 		if (!user) throw new UnauthorizedException('Email or password invalid')

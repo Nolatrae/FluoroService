@@ -20,14 +20,6 @@ export async function middleware(request: NextRequest, response: NextResponse) {
 			const data = await authService.getNewTokensByRefresh(refreshToken)
 			accessToken = data.accessToken
 		} catch (error) {
-			// if (isAxiosError(error)) {
-			// 	if (error.message === 'invalid token') {
-			// 		console.log('не валидный токен')
-			// 		request.cookies.delete(EnumTokens.ACCESS_TOKEN)
-			// 		return redirectToLogin(isAdminPage, request)
-			// 	}
-			// }
-
 			request.cookies.delete(EnumTokens.ACCESS_TOKEN)
 			return redirectToLogin(isAdminPage, request)
 		}
