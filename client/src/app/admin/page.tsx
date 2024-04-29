@@ -26,12 +26,15 @@ const fetchUser = async () => {
 
 export default async function AdminPage() {
 	const users = await fetchUser()
-	console.log(users)
+	const filteredUsers = users.map(user => {
+		const { fluorography, ...rest } = user
+		return rest
+	})
 
 	return (
 		<>
 			<div className='overflow-auto'>
-				<Table data={users} adminMenu={true} />
+				<Table data={filteredUsers} adminMenu={true} />
 			</div>
 			{/* <div className='flex justify-between w-full'>
 				<div className=''>Egor</div>

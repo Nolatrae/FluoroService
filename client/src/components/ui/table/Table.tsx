@@ -8,7 +8,14 @@ export default function Table({ data, adminMenu = false }: any) {
 		return <p>No data</p>
 	}
 
-	const columns = Object.keys(data[0])
+	console.log(data)
+
+	const filteredData = data.map(item => {
+		const { id, fluorography, ...rest } = item
+		return rest
+	})
+
+	const columns = Object.keys(filteredData[0])
 
 	if (adminMenu) {
 		columns.unshift('')
@@ -39,7 +46,7 @@ export default function Table({ data, adminMenu = false }: any) {
 					</tr>
 				</thead>
 				<tbody>
-					{data.map((item: any, rowIndex: any) => (
+					{filteredData.map((item: any, rowIndex: any) => (
 						<tr key={rowIndex}>
 							{columns.map((column, colIndex) => (
 								<td key={colIndex} className='border px-4 py-2'>
@@ -56,12 +63,23 @@ export default function Table({ data, adminMenu = false }: any) {
 					))}
 				</tbody>
 			</table>
-			<ModalUI
-				isOpen={modalIsOpen}
-				onRequestClose={closeModal}
-				userData={selectedItem ? selectedItem : { id: 'not stated' }}
-			/>
-			{/* Передаем информацию о пользователе в компонент модального окна */}
+			{adminMenu ? (
+				<ModalUI
+					isOpen={modalIsOpen}
+					onRequestClose={closeModal}
+					userData={
+						selectedItem
+							? selectedItem
+							: {
+									id: 'not stated',
+									email: 'not stated',
+									firstName: 'not stated',
+									middleName: 'not stated',
+									lastName: 'not stated',
+							  }
+					}
+				/>
+			) : null}
 		</div>
 	)
 }

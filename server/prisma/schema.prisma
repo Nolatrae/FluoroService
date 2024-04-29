@@ -19,8 +19,8 @@ model User {
   lastName   String
   password   String
 
-  role         Role           @default(STUDENT)
-  fluorography Fluorography[]
+  role         Role          @default(STUDENT)
+  Fluorography Fluorography?
 }
 
 enum Role {
@@ -39,6 +39,6 @@ model Fluorography {
   id      String   @id @default(cuid())
   fileUrl String   @map("file_url")
   date    DateTime @map("date")
+  userId  String   @unique
   user    User     @relation(fields: [userId], references: [id])
-  userId  String   @map("user_id")
 }

@@ -14,7 +14,7 @@ export class UserService {
 				id,
 			},
 			include: {
-				fluorography: true,
+				Fluorography: true,
 			},
 		})
 	}
@@ -30,7 +30,7 @@ export class UserService {
 	getAll(): Promise<User[]> {
 		return this.prisma.user.findMany({
 			include: {
-				fluorography: true,
+				Fluorography: true,
 			},
 		})
 	}

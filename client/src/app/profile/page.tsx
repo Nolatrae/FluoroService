@@ -1,6 +1,8 @@
 // const fetchProfile = async () => {
 // 	'use server'
 
+import { Metadata } from 'next'
+
 // 	const cookie = cookies()
 // 	const accessToken = cookie.get(EnumTokens.ACCESS_TOKEN)?.value
 
@@ -10,6 +12,10 @@
 // 		},
 // 	}).then(res => res.json()) as Promise<IUser>
 // }
+
+export const metadata: Metadata = {
+	title: 'Profile',
+}
 
 export default async function ProfilePage() {
 	// const profile = await fetchProfile()

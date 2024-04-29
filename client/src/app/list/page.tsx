@@ -1,12 +1,12 @@
-import Table from "@/components/ui/table/Table";
-import { API_URL } from "@/constants";
-import { EnumTokens } from "@/services/auth.service";
-import { IUser } from "@/types/types";
-import { Metadata } from "next";
-import { cookies } from "next/headers";
+import Table from '@/components/ui/table/Table'
+import { API_URL } from '@/constants'
+import { EnumTokens } from '@/services/auth.service'
+import { IUser } from '@/types/types'
+import { Metadata } from 'next'
+import { cookies } from 'next/headers'
 
 export const metadata: Metadata = {
-	title: 'list users',
+	title: 'List users',
 }
 
 const fetchUser = async () => {
@@ -23,12 +23,17 @@ const fetchUser = async () => {
 }
 
 export default async function Page() {
+	const users = await fetchUser()
+	// const usersWithoutFluoro = users.map(user => {
+	// 	const { fluorography, ...rest } = user
+	// 	return rest
+	// })
 
-    const users = await fetchUser()
+	// const filteredUsers = users.filter(user => user.role)
 
-    return(
-        <>
-        <Table data={users} />
-        </>
-    )
+	return (
+		<>
+			<Table data={users} />
+		</>
+	)
 }

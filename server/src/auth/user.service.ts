@@ -17,7 +17,7 @@ export class UserService {
 				lastName: true,
 				email: true,
 				role: true,
-				// fluorography: true,
+				Fluorography: true,
 				password: false,
 			},
 		})

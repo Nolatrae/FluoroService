@@ -6,6 +6,7 @@ export interface IUser {
 	firstName: string
 	middleName: string
 	lastName: string
+	fluorography: string[]
 	role: UserRole
 }
 

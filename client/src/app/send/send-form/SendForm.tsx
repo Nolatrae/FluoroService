@@ -47,6 +47,5 @@ export default function SendForm() {
 				<button type='submit'>Submit</button>
 			</div>
 		</form>
-		// <>45646</>
 	)
 }
