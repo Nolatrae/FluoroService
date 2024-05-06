@@ -1,5 +1,5 @@
 import type { PropsWithChildren } from 'react'
-import { Header } from './header/Header'
+import HeaderNew from '../dashboard-layout-new/header/HeaderNew'
 import { Sidebar } from './sidebar/Sidebar'
 
 export default function DashboardLayout({
@@ -9,7 +9,8 @@ export default function DashboardLayout({
 		<div className='min-h-screen flex relative' id='viewport'>
 			<Sidebar />
 			<div className='min-h-screen relative w-full'>
-				<Header />
+				<HeaderNew />
+
 				<main className='p-8'>{children}</main>
 			</div>
 		</div>

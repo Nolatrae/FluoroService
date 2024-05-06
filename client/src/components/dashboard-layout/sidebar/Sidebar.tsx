@@ -1,6 +1,6 @@
 'use client'
 
-import { useProfile } from '@/app/hooks/useProfile'
+import { useProfile } from '@/hooks/useProfile'
 import { BriefcaseMedical } from 'lucide-react'
 import Link from 'next/link'
 import { MenuItem } from './MenuItem'

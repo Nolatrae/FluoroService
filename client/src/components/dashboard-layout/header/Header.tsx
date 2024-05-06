@@ -1,7 +1,7 @@
 'use client'
 
-import { useProfile } from '@/app/hooks/useProfile'
 import { PUBLIC_PAGES } from '@/config/pages/public.config'
+import { useProfile } from '@/hooks/useProfile'
 import authService from '@/services/auth.service'
 import { useMutation } from '@tanstack/react-query'
 import { LogOut } from 'lucide-react'
