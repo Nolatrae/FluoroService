@@ -1,11 +1,17 @@
 import type { Metadata } from 'next'
-import { Fira_Mono } from 'next/font/google'
+// import { Fira_Mono } from 'next/font/google'
+import { Inter as FontSans } from 'next/font/google'
 
-import DashboardLayout from '@/components/dashboard-layout/DashboardLayout'
-import './globals.css'
+import { cn } from '@/lib/utils'
 import { Providers } from './Providers'
+import './globals.css'
 
-const inter = Fira_Mono({ subsets: ['cyrillic', 'latin'], weight: '400' })
+// const inter = Fira_Mono({ subsets: ['cyrillic', 'latin'], weight: '400' })
+
+const fontSans = FontSans({
+	subsets: ['latin'],
+	variable: '--font-sans',
+})
 
 export const metadata: Metadata = {
 	title: 'Create Next App',
@@ -19,10 +25,13 @@ export default function RootLayout({
 }) {
 	return (
 		<html lang='en'>
-			<body className={inter.className}>
-				<Providers>
-					<DashboardLayout>{children}</DashboardLayout>
-				</Providers>
+			<body
+				className={cn(
+					'min-h-screen bg-background font-sans antialiased',
+					fontSans.variable
+				)}
+			>
+				<Providers>{children}</Providers>
 			</body>
 		</html>
 	)
