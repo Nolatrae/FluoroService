@@ -36,7 +36,7 @@ export class UserController {
 	@UsePipes(new ValidationPipe())
 	@HttpCode(200)
 	@Patch('list/:id')
-	@Auth('ADMIN')
+	@Auth(['ADMIN'])
 	async changeRole(@Param('id') id: string, @Body('role') newRole: Role) {
 		return this.userService.changeRole(id, newRole)
 	}

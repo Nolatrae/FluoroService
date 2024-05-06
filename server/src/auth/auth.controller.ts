@@ -4,6 +4,7 @@ import {
 	Get,
 	HttpCode,
 	Post,
+	Query,
 	Req,
 	Res,
 	UnauthorizedException,
@@ -88,9 +89,11 @@ export class AuthController {
 		return this.userService.getById(id)
 	}
 
-	@Auth('ADMIN')
+	@Auth(['ADMIN'])
 	@Get('users')
-	async getList() {
-		return this.userService.getUsers()
+	async getList(@Query('fluorography') fluorography?: string) {
+		const withFluorography = fluorography === 'true'
+
+		return this.userService.getUsers(withFluorography)
 	}
 }

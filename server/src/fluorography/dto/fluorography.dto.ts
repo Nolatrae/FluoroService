@@ -1,9 +1,13 @@
-import { IsString } from 'class-validator'
+import { IsOptional, IsString } from 'class-validator'
 
 export class FluorographyDto {
 	@IsString()
-	fileUrl: string
+	filePath: string
 
 	@IsString()
 	date: string
+
+	@IsOptional()
+	@IsString()
+	description: string
 }

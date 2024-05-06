@@ -9,17 +9,4 @@ export class LoginDto {
 	})
 	@IsString()
 	password: string
-
-	// @IsString()
-	// firstName: string
-
-	// @IsString()
-	// @IsOptional()
-	// middleName: string
-
-	// @IsString()
-	// lastName: string
-
-	// @IsString()
-	// role: Role
 }

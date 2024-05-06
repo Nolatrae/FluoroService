@@ -1,4 +1,5 @@
 import { UserRole } from '@/services/auth.types'
+import { FluoroStatus } from '@/services/fluoro.types'
 
 export interface IUser {
 	id: string
@@ -6,8 +7,18 @@ export interface IUser {
 	firstName: string
 	middleName: string
 	lastName: string
-	fluorography: string[]
 	role: UserRole
+}
+
+export interface IFluorography {
+	filePath: string
+	date: Date
+	description: string
+	status: FluoroStatus
+}
+
+export interface IUserCheckFluoro extends Omit<IUser, 'role' | 'email' | 'id'> {
+	Fluorography: IFluorography
 }
 
 export interface IFormSendFluoro {

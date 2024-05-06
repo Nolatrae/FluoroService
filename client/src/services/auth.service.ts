@@ -28,9 +28,7 @@ class AuthService {
 		const response = await axiosClassic.post<IAuthResponse>(
 			'/auth/login/access-token'
 		)
-
 		if (response.data.accessToken) saveTokenStorage(response.data.accessToken)
-
 		return response
 	}
 

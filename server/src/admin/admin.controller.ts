@@ -17,7 +17,7 @@ export class AdminController {
 	@UsePipes(new ValidationPipe())
 	@HttpCode(200)
 	@Put()
-	@Auth('ADMIN')
+	@Auth(['ADMIN'])
 	async updateOtherUserData(@Body() dto: ChangeUserDto) {
 		return this.adminService.updateOtherUser(dto)
 	}
