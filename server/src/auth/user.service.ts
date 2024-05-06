@@ -8,18 +8,25 @@ import { AuthDto } from './dto/auth.dto'
 export class UserService {
 	constructor(private prisma: PrismaService) {}
 
-	async getUsers() {
+	async getUsers(withFluorography: boolean = true) {
+		const select = {
+			id: true,
+			firstName: true,
+			middleName: true,
+			lastName: true,
+			email: true,
+			role: true,
+			password: false,
+		}
+
+		if (withFluorography) {
+			select['Fluorography'] = true
+		} else {
+			select['Fluorography'] = false
+		}
+
 		return this.prisma.user.findMany({
-			select: {
-				id: true,
-				firstName: true,
-				middleName: true,
-				lastName: true,
-				email: true,
-				role: true,
-				Fluorography: true,
-				password: false,
-			},
+			select,
 		})
 	}
 
@@ -46,7 +53,8 @@ export class UserService {
 			firstName: dto.firstName,
 			middleName: dto.middleName,
 			lastName: dto.lastName,
-			role: dto.role,
+			// role: Role.STUDENT,
+			group: dto.group,
 		}
 
 		return this.prisma.user.create({

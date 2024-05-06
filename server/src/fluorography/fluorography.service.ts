@@ -1,5 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common'
+import { FluoroStatus } from '@prisma/client'
 import * as fs from 'fs'
+import * as fsPromises from 'fs/promises'
 import * as path from 'path'
 import { PrismaService } from 'src/prisma.service'
 import { FluorographyDto } from './dto/fluorography.dto'
@@ -13,23 +15,34 @@ export class FluorographyService {
 		file: Express.Multer.File,
 		dto: FluorographyDto
 	) {
-		if (!file.mimetype.startsWith('image')) {
-			// console.log(file.size)
-			throw new BadRequestException('Only images are allowed')
-		}
-		// console.log(file)
-
-		const filename = `${userId}_${new Date().getTime()}${path.extname(file.originalname)}`
-
+		// Путь к директории для загрузки файлов
 		const uploadsDirectory = './uploads'
-		const filePath = path.join(uploadsDirectory, filename)
 
-		await fs.promises.writeFile(filePath, file.buffer)
+		// Создаем имя нового файла, используя userId и текущее время
+		const newFilename = `${userId}_${Date.now()}${path.extname(file.originalname)}`
+		const newFilePath = path.join(uploadsDirectory, newFilename)
 
+		// Проверяем, существует ли у пользователя старая картинка
+		const oldFluorography = await this.prisma.fluorography.findFirst({
+			where: {
+				userId,
+			},
+		})
+
+		// Если у пользователя есть старая картинка, удаляем её
+		if (oldFluorography && oldFluorography.filePath)
+			await this.delete(oldFluorography.id)
+
+		// Записываем новую картинку на диск
+		await fsPromises.writeFile(newFilePath, file.buffer)
+
+		// Сохраняем информацию о новой картинке в базу данных
 		return this.prisma.fluorography.create({
 			data: {
 				date: new Date(dto.date),
-				fileUrl: filename, // Сохраняем имя файла в базе данных
+				filePath: newFilename,
+				description: dto.description,
+				status: FluoroStatus.PENDING,
 				user: {
 					connect: {
 						id: userId,
@@ -64,13 +77,37 @@ export class FluorographyService {
 		}
 
 		// Удаляем файл из папки uploads
-		const filePath = path.join('./uploads', fluorography.fileUrl)
+		const filePath = path.join('./uploads', fluorography.filePath)
 		fs.unlinkSync(filePath)
 
 		// Удаляем запись о флюорографии из базы данных
 		return this.prisma.fluorography.delete({
 			where: {
 				id: fluorographyId,
+			},
+		})
+	}
+
+	async changeFluorographyStatus(userId: string, status: string) {
+		const validStatuses = ['PENDING', 'ACCEPTED', 'REJECTED']
+
+		if (!validStatuses.includes(status))
+			throw new BadRequestException('Invalid status')
+
+		const fluorography = await this.prisma.fluorography.findFirst({
+			where: {
+				userId: userId,
+			},
+		})
+
+		if (!fluorography) throw new Error('Fluorography not found')
+
+		return this.prisma.fluorography.update({
+			where: {
+				id: fluorography.id,
+			},
+			data: {
+				status: status as FluoroStatus,
 			},
 		})
 	}

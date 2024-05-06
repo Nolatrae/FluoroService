@@ -10,19 +10,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id String @id @default(cuid())
-
-  email      String  @unique
-  firstName  String
-  middleName String?
-  lastName   String
-  password   String
-
-  role         Role          @default(STUDENT)
-  Fluorography Fluorography?
-}
-
 enum Role {
   STUDENT
   ADMIN
@@ -35,10 +22,26 @@ enum FluoroStatus {
   REJECTED
 }
 
+model User {
+  id String @id @default(cuid())
+
+  email      String  @unique
+  firstName  String  @map("first_name")
+  middleName String? @map("middle_name")
+  lastName   String  @map("last_name")
+  password   String
+  group      Int?    @map("group")
+
+  role         Role          @default(STUDENT)
+  fluorography Fluorography?
+}
+
 model Fluorography {
-  id      String   @id @default(cuid())
-  fileUrl String   @map("file_url")
-  date    DateTime @map("date")
-  userId  String   @unique
-  user    User     @relation(fields: [userId], references: [id])
+  id          String       @id @default(cuid())
+  filePath    String       @map("file_path")
+  date        DateTime     @map("date")
+  description String?      @map("description")
+  status      FluoroStatus
+  userId      String       @unique
+  user        User         @relation(fields: [userId], references: [id])
 }

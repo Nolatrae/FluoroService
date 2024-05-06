@@ -5,11 +5,15 @@ import {
 	Get,
 	HttpCode,
 	Param,
+	Patch,
 	Post,
 	UploadedFile,
 	UseInterceptors,
+	UsePipes,
+	ValidationPipe,
 } from '@nestjs/common'
 import { FileInterceptor } from '@nestjs/platform-express'
+import { FluoroStatus } from '@prisma/client'
 import { Auth } from 'src/auth/decorators/auth.decorator'
 import { CurrentUser } from 'src/auth/decorators/user.decorator'
 import { FluorographyDto } from './dto/fluorography.dto'
@@ -29,7 +33,6 @@ export class FluorographyController {
 		@UploadedFile() file: Express.Multer.File,
 		@Body() dto: FluorographyDto
 	) {
-		console.log(id, file, dto)
 		return this.fluorographyService.createUserFluorography(id, file, dto)
 	}
 
@@ -43,5 +46,16 @@ export class FluorographyController {
 	@Delete(':id')
 	async deleteById(@Param('id') id: string) {
 		return this.fluorographyService.delete(id)
+	}
+
+	@HttpCode(200)
+	@Patch()
+	@Auth(['ADMIN'])
+	@UsePipes(new ValidationPipe())
+	async changeFluorographyStatus(
+		@Body('id') id: string,
+		@Body('status') status: FluoroStatus
+	) {
+		return this.fluorographyService.changeFluorographyStatus(id, status)
 	}
 }

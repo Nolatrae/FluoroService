@@ -14,7 +14,7 @@ export class UserService {
 				id,
 			},
 			include: {
-				Fluorography: true,
+				fluorography: true,
 			},
 		})
 	}
@@ -30,7 +30,7 @@ export class UserService {
 	getAll(): Promise<User[]> {
 		return this.prisma.user.findMany({
 			include: {
-				Fluorography: true,
+				fluorography: true,
 			},
 		})
 	}
@@ -53,6 +53,7 @@ export class UserService {
 			firstName: dto.firstName,
 			middleName: dto.middleName,
 			lastName: dto.lastName,
+			group: dto.group,
 		}
 
 		return this.prisma.user.create({
