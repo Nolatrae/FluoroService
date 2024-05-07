@@ -8,6 +8,7 @@ export interface IUser {
 	middleName: string
 	lastName: string
 	role: UserRole
+	group: number
 }
 
 export interface IFluorography {
@@ -47,4 +48,9 @@ export interface IUserData {
 	middleName: string
 	lastName: string
 	role?: UserRole
+}
+
+export interface IChangeRole {
+	id: string
+	role: UserRole
 }

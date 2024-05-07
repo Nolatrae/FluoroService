@@ -3,7 +3,6 @@ import {
 	Controller,
 	Get,
 	HttpCode,
-	Param,
 	Patch,
 	Put,
 	UsePipes,
@@ -35,9 +34,9 @@ export class UserController {
 
 	@UsePipes(new ValidationPipe())
 	@HttpCode(200)
-	@Patch('list/:id')
+	@Patch('list')
 	@Auth(['ADMIN'])
-	async changeRole(@Param('id') id: string, @Body('role') newRole: Role) {
+	async changeRole(@Body('id') id: string, @Body('role') newRole: Role) {
 		return this.userService.changeRole(id, newRole)
 	}
 }

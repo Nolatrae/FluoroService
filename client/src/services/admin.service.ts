@@ -1,5 +1,5 @@
 import { instance } from '@/api/axios'
-import { IUserData } from '@/types/types'
+import { IChangeRole, IUserData } from '@/types/types'
 
 class AdminService {
 	private BASE_URL = '/admin'
@@ -7,6 +7,12 @@ class AdminService {
 	async changeUserData(data: IUserData) {
 		console.log(data)
 		const response = instance.put(this.BASE_URL, data)
+		return response
+	}
+
+	async changeRole(data: IChangeRole) {
+		console.log(2)
+		const response = instance.patch('/user/list', data)
 		return response
 	}
 }
