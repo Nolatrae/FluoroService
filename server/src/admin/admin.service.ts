@@ -10,7 +10,7 @@ export class AdminService {
 		const data = dto
 		return this.prisma.user.update({
 			where: {
-				id: dto.id,
+				email: dto.email,
 			},
 			data,
 		})

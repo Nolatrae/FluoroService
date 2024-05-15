@@ -30,7 +30,7 @@ model User {
   middleName String? @map("middle_name")
   lastName   String  @map("last_name")
   password   String
-  group      Int?    @map("group")
+  group      String? @map("group")
 
   role         Role          @default(STUDENT)
   fluorography Fluorography?

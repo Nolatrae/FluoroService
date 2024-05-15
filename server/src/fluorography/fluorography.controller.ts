@@ -16,7 +16,6 @@ import { FileInterceptor } from '@nestjs/platform-express'
 import { FluoroStatus } from '@prisma/client'
 import { Auth } from 'src/auth/decorators/auth.decorator'
 import { CurrentUser } from 'src/auth/decorators/user.decorator'
-import { FluorographyDto } from './dto/fluorography.dto'
 import { FluorographyService } from './fluorography.service'
 
 @Controller('fluorography')
@@ -31,8 +30,9 @@ export class FluorographyController {
 	async send(
 		@CurrentUser('id') id: string,
 		@UploadedFile() file: Express.Multer.File,
-		@Body() dto: FluorographyDto
+		@Body() dto
 	) {
+		console.log('============', id, dto)
 		return this.fluorographyService.createUserFluorography(id, file, dto)
 	}
 

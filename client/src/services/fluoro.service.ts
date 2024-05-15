@@ -1,13 +1,16 @@
-import { instance } from '@/api/axios'
-import { IFormSendFluoro } from '@/types/types'
-
 class SendFluoroService {
 	private BASE_URL = '/fluorography/send'
 
-	async sendFluoro(data: IFormSendFluoro) {
-		console.log(data)
-		const response = instance.post(this.BASE_URL, data)
-		return response
+	async sendFluoro(
+		data: any
+		// : IFormSendFluoro
+	) {
+		const formData = new FormData()
+		formData.append('file', data.file)
+		formData.append('date', data.date)
+		formData.append('desc', data.desc)
+
+		return formData
 	}
 }
 

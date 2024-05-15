@@ -4,7 +4,6 @@ import {
 	Get,
 	HttpCode,
 	Post,
-	Query,
 	Req,
 	Res,
 	UnauthorizedException,
@@ -90,10 +89,26 @@ export class AuthController {
 	}
 
 	@Auth(['ADMIN'])
-	@Get('users')
-	async getList(@Query('fluorography') fluorography?: string) {
-		const withFluorography = fluorography === 'true'
+	@Post('other-profile')
+	async getOtherProfile(@Body('id') id: string) {
+		return this.userService.getById(id)
+	}
 
-		return this.userService.getUsers(withFluorography)
+	@Auth(['ADMIN'])
+	@Get('users')
+	async getList() {
+		return this.userService.getUsers()
+	}
+
+	@Auth()
+	@Get('users-with-fluoro')
+	async getListWithFluoro() {
+		return this.userService.getUsersWithFluoro()
+	}
+
+	@Auth()
+	@Get('count-users-with-fluoro')
+	async getCountUsersWithFluoro() {
+		return this.userService.getCountUsersWithFluoro()
 	}
 }

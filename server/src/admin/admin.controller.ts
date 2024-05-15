@@ -2,7 +2,7 @@ import {
 	Body,
 	Controller,
 	HttpCode,
-	Put,
+	Patch,
 	UsePipes,
 	ValidationPipe,
 } from '@nestjs/common'
@@ -16,7 +16,7 @@ export class AdminController {
 
 	@UsePipes(new ValidationPipe())
 	@HttpCode(200)
-	@Put()
+	@Patch('list')
 	@Auth(['ADMIN'])
 	async updateOtherUserData(@Body() dto: ChangeUserDto) {
 		return this.adminService.updateOtherUser(dto)

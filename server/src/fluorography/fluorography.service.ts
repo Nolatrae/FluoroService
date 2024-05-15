@@ -36,10 +36,18 @@ export class FluorographyService {
 		// Записываем новую картинку на диск
 		await fsPromises.writeFile(newFilePath, file.buffer)
 
-		// Сохраняем информацию о новой картинке в базу данных
+		// Предположим, что dto.date содержит строку с датой
+		let currentDate = new Date(dto.date)
+
+		// Увеличиваем месяц на полгода
+		currentDate.setMonth(currentDate.getMonth() + 6)
+
+		// Преобразуем полученную дату в формат ISO-8601 DateTime
+		const isoDate = currentDate.toISOString()
+
 		return this.prisma.fluorography.create({
 			data: {
-				date: new Date(dto.date),
+				date: isoDate, // Преобразуем дату в формат ISO-8601 DateTime
 				filePath: newFilename,
 				description: dto.description,
 				status: FluoroStatus.PENDING,

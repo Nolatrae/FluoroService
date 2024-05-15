@@ -1,41 +1,24 @@
-import Table from '@/components/ui/table/Table'
-import { API_URL } from '@/constants'
-import { EnumTokens } from '@/services/auth.service'
-import { IUser } from '@/types/types'
+import { DataTable } from '../admin/data-table'
 
-import type { Metadata } from 'next'
+// import { fetchUser } from '@/hooks/fetchUser'
+import { columns } from '../admin/columns'
 
-import { cookies } from 'next/headers'
+import { fetchUser } from '@/hooks/fetchUser'
+import { Metadata } from 'next'
 
 export const metadata: Metadata = {
-	title: 'Admin SSR',
-}
-
-const fetchUser = async (withFluorography: boolean) => {
-	'use server'
-
-	const cookie = cookies()
-	const accessToken = cookie.get(EnumTokens.ACCESS_TOKEN)?.value
-
-	const url = withFluorography
-		? `${API_URL}/auth/users?fluorography=true`
-		: `${API_URL}/auth/users?fluorography=false`
-
-	return fetch(url, {
-		headers: {
-			Authorization: `Bearer ${accessToken}`,
-		},
-	}).then(res => res.json()) as Promise<IUser[]>
+	title: 'Admin panel',
+	description: 'Admin panel for administration',
 }
 
 export default async function AdminPage() {
-	const users = await fetchUser(false)
+	const data = await fetchUser()
 
 	return (
-		<>
-			<div className='overflow-auto'>
-				<Table data={users} adminMenu={true} />
+		<div className='overflow-hidden rounded-[0.5rem] border bg-background shadow m-10'>
+			<div className='container mx-auto py-10'>
+				<DataTable columns={columns} data={data} />
 			</div>
-		</>
+		</div>
 	)
 }

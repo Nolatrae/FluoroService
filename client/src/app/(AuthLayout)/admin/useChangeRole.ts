@@ -10,8 +10,7 @@ export function useChangeRole() {
 		mutationKey: ['change_role'],
 		mutationFn: (data: IChangeRole) => adminService.changeRole(data),
 		onSuccess() {
-			console.log('3')
-			toast.success('Successfully update role!')
+			toast.success('Обновление роли произошло успешно')
 		},
 	})
 	return { mutate, isPending }

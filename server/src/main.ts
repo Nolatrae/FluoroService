@@ -2,6 +2,8 @@ import { NestFactory } from '@nestjs/core'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import { useContainer } from 'class-validator'
 import * as cookieParser from 'cookie-parser'
+import * as express from 'express'
+import * as path from 'path'
 import { AppModule } from './app.module'
 
 async function bootstrap() {
@@ -16,6 +18,8 @@ async function bootstrap() {
 	})
 
 	useContainer(app.select(AppModule), { fallbackOnErrors: true })
+
+	app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')))
 
 	const options = new DocumentBuilder()
 		.setTitle('Fluorography API')

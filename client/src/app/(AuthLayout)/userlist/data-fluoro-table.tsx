@@ -30,13 +30,14 @@ import {
 	TableHeader,
 	TableRow,
 } from '@/components/ui/table'
+import { exportToText } from '@/hooks/useTableInTxt'
 
 interface DataTableProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[]
 	data: TData[]
 }
 
-export function DataTable<TData, TValue>({
+export function DataFluoroTable<TData, TValue>({
 	columns,
 	data,
 }: DataTableProps<TData, TValue>) {
@@ -69,25 +70,51 @@ export function DataTable<TData, TValue>({
 		},
 	})
 
+	function getEnding(number: number) {
+		const cases = [2, 0, 1, 1, 1, 2]
+		const titles = ['пользователь', 'пользователя', 'пользователей']
+		const index =
+			number % 100 > 4 && number % 100 < 20
+				? 2
+				: cases[number % 10 < 5 ? number % 10 : 5]
+		return titles[index]
+	}
+
+	const userCount = table.getFilteredRowModel().rows.length
+	const ending = getEnding(userCount)
+
 	return (
 		<div>
 			<div className='flex-1 text-sm text-muted-foreground'>
-				{table.getFilteredSelectedRowModel().rows.length} of{' '}
-				{table.getFilteredRowModel().rows.length} row(s) selected.
+				{userCount} {ending}
 			</div>
-			<div className='flex items-center py-4'>
+			<div className='flex items-center py-4 gap-2'>
 				<Input
-					placeholder='Filter emails...'
-					value={(table.getColumn('email')?.getFilterValue() as string) ?? ''}
+					placeholder='Поиск по фамилии'
+					value={
+						(table.getColumn('lastName')?.getFilterValue() as string) ?? ''
+					}
 					onChange={event =>
-						table.getColumn('email')?.setFilterValue(event.target.value)
+						table.getColumn('lastName')?.setFilterValue(event.target.value)
 					}
 					className='max-w-sm'
 				/>
+				<Input
+					placeholder='Поиск по группе...'
+					value={(table.getColumn('group')?.getFilterValue() as string) ?? ''}
+					onChange={event =>
+						table.getColumn('group')?.setFilterValue(event.target.value)
+					}
+					className='max-w-sm'
+				/>
+
+				<Button className='ml-auto' variant='outline' onClick={exportToText}>
+					Экспорт
+				</Button>
 				<DropdownMenu>
 					<DropdownMenuTrigger asChild>
 						<Button variant='outline' className='ml-auto'>
-							Columns
+							Колонки
 						</Button>
 					</DropdownMenuTrigger>
 					<DropdownMenuContent align='end'>
@@ -96,14 +123,18 @@ export function DataTable<TData, TValue>({
 							.filter(column => column.getCanHide())
 							.map(column => {
 								return (
-									<DropdownMenuCheckboxItem
-										key={column.id}
-										className='capitalize'
-										checked={column.getIsVisible()}
-										onCheckedChange={value => column.toggleVisibility(!!value)}
-									>
-										{column.id}
-									</DropdownMenuCheckboxItem>
+									<>
+										<DropdownMenuCheckboxItem
+											key={column.id}
+											className='capitalize'
+											checked={column.getIsVisible()}
+											onCheckedChange={value =>
+												column.toggleVisibility(!!value)
+											}
+										>
+											{column.id}
+										</DropdownMenuCheckboxItem>
+									</>
 								)
 							})}
 					</DropdownMenuContent>
@@ -166,7 +197,7 @@ export function DataTable<TData, TValue>({
 					onClick={() => table.previousPage()}
 					disabled={!table.getCanPreviousPage()}
 				>
-					Previous
+					Предыдущая
 				</Button>
 				<Button
 					variant='outline'
@@ -174,7 +205,7 @@ export function DataTable<TData, TValue>({
 					onClick={() => table.nextPage()}
 					disabled={!table.getCanNextPage()}
 				>
-					Next
+					Следующая
 				</Button>
 			</div>
 		</div>

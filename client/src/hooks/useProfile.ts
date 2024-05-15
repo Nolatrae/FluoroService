@@ -1,3 +1,5 @@
+'use client'
+
 import { saveTokenStorage } from '@/services/auth.helper'
 import authService from '@/services/auth.service'
 import { transformUserToState } from '@/utils/transform-user-to-state'

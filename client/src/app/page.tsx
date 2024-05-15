@@ -1,5 +1,13 @@
-import { Home } from './Home'
+'use client'
+import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
 
 export default function HomePage() {
-	return <Home />
+	const router = useRouter()
+
+	useEffect(() => {
+		router.push('/profile')
+	}, [])
+
+	return <></>
 }

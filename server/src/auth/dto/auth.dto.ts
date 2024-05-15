@@ -1,10 +1,4 @@
-import {
-	IsEmail,
-	IsInt,
-	IsOptional,
-	IsString,
-	MinLength,
-} from 'class-validator'
+import { IsEmail, IsOptional, IsString, MinLength } from 'class-validator'
 
 export class AuthDto {
 	@IsEmail()
@@ -27,6 +21,6 @@ export class AuthDto {
 	lastName: string
 
 	@IsOptional()
-	@IsInt()
-	group: number
+	@IsString()
+	group: string
 }

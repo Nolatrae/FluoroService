@@ -3,21 +3,25 @@ import { IsEmail, IsOptional, IsString } from 'class-validator'
 
 export class ChangeUserDto {
 	@IsString()
-	id: string
-
-	@IsString()
-	firstName: string
+	@IsOptional()
+	firstName?: string
 
 	@IsString()
 	@IsOptional()
-	middleName: string
+	middleName?: string
 
 	@IsString()
-	lastName: string
+	@IsOptional()
+	lastName?: string
 
 	@IsString()
-	role: Role
+	@IsOptional()
+	role?: Role
 
 	@IsEmail()
 	email: string
+
+	@IsString()
+	@IsOptional()
+	group?: string
 }

@@ -1,4 +1,4 @@
-import { IsNumber, IsOptional, IsString, MinLength } from 'class-validator'
+import { IsOptional, IsString, MinLength } from 'class-validator'
 
 export class UserDto {
 	@IsString()
@@ -20,7 +20,7 @@ export class UserDto {
 	@IsString()
 	password: string
 
-	@IsNumber()
+	@IsString()
 	@IsOptional()
-	group: number
+	group: string
 }

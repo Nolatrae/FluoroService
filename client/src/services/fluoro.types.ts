@@ -8,3 +8,8 @@ export enum FluoroStatus {
 	Accepted = 'ACCEPTED',
 	Rejected = 'REJECTED',
 }
+
+export interface IChangeFluoroStatus {
+	id: string
+	status: FluoroStatus
+}

@@ -1,113 +1,41 @@
 'use client'
 
+import { IUserFluoro } from '@/types/types'
 import { ColumnDef } from '@tanstack/react-table'
-import {
-	ArrowUpDown,
-	Baby,
-	Meh,
-	MoreHorizontal,
-	Settings,
-	Shield,
-	Users,
-} from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuLabel,
-	DropdownMenuPortal,
-	DropdownMenuSeparator,
-	DropdownMenuSub,
-	DropdownMenuSubContent,
-	DropdownMenuSubTrigger,
-	DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
-import { adminService } from '@/services/admin.service'
-import { UserRole } from '@/services/auth.types'
-import { IUser } from '@/types/types'
+	Dialog,
+	DialogContent,
+	DialogDescription,
+	DialogHeader,
+	DialogTitle,
+	DialogTrigger,
+} from '@/components/ui/dialog'
+import { FluoroStatus } from '@/services/fluoro.types'
+import {
+	ArrowUpDown,
+	Clock4,
+	FileImage,
+	ThumbsDown,
+	ThumbsUp,
+} from 'lucide-react'
+import DisplayFluoro from './DisplayFLuoro'
 
-// const { mutate } = useChangeRole()
-
-export const columns: ColumnDef<IUser>[] = [
-	{
-		id: 'actions',
-		cell: ({ row }) => {
-			const user = row.original
-
-			return (
-				<DropdownMenu>
-					<DropdownMenuTrigger asChild>
-						<Button variant='ghost' className='h-8 w-8 p-0'>
-							<span className='sr-only'>Open menu</span>
-							<MoreHorizontal className='h-4 w-4' />
-						</Button>
-					</DropdownMenuTrigger>
-					<DropdownMenuContent align='start'>
-						<DropdownMenuLabel>Действия</DropdownMenuLabel>
-						<DropdownMenuItem
-							onClick={() => navigator.clipboard.writeText(user.id)}
-						>
-							Копировать айди
-						</DropdownMenuItem>
-						<DropdownMenuSeparator />
-						{/* <DropdownMenuItem>Сменить роль</DropdownMenuItem> */}
-						<DropdownMenuSub>
-							<DropdownMenuSubTrigger>
-								<Users className='mr-2 h-4 w-4' />
-								<span>Поменять роль</span>
-							</DropdownMenuSubTrigger>
-							<DropdownMenuPortal>
-								<DropdownMenuSubContent>
-									<DropdownMenuItem
-										onClick={e => {
-											adminService.changeRole({
-												id: user.id,
-												role: UserRole.Admin,
-											})
-										}}
-									>
-										<Shield className='mr-2 h-4 w-4' />
-										<span>Администратор</span>
-									</DropdownMenuItem>
-									<DropdownMenuItem
-										onClick={e => {
-											adminService.changeRole({
-												id: user.id,
-												role: UserRole.Curator,
-											})
-										}}
-									>
-										<Meh className='mr-2 h-4 w-4' />
-										<span>Куратор</span>
-									</DropdownMenuItem>
-									<DropdownMenuItem
-										onClick={e => {
-											adminService.changeRole({
-												id: user.id,
-												role: UserRole.User,
-											})
-										}}
-									>
-										<Baby className='mr-2 h-4 w-4' />
-										<span>Студент</span>
-									</DropdownMenuItem>
-								</DropdownMenuSubContent>
-							</DropdownMenuPortal>
-						</DropdownMenuSub>
-						<DropdownMenuItem>
-							<Settings className='mr-2 h-4 w-4' />
-							<span>Поменять данные</span>
-						</DropdownMenuItem>
-					</DropdownMenuContent>
-				</DropdownMenu>
-			)
-		},
-	},
+export const columnsFluoro: ColumnDef<IUserFluoro>[] = [
 	{
 		accessorKey: 'lastName',
-		header: 'Фамилия',
+		header: ({ column }) => {
+			return (
+				<Button
+					variant='ghost'
+					onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+				>
+					Фамилия
+					<ArrowUpDown className='ml-2 h-4 w-4' />
+				</Button>
+			)
+		},
 	},
 	{
 		accessorKey: 'firstName',
@@ -132,30 +60,76 @@ export const columns: ColumnDef<IUser>[] = [
 		},
 	},
 	{
-		accessorKey: 'email',
+		accessorKey: 'fluorography.status',
 		header: ({ column }) => {
 			return (
 				<Button
 					variant='ghost'
 					onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
 				>
-					Email
+					Статус
 					<ArrowUpDown className='ml-2 h-4 w-4' />
 				</Button>
 			)
 		},
+		cell: ({ row }) => {
+			const user = row.original
+			const fluoroStatus = user.fluorography.status
+			switch (fluoroStatus) {
+				case FluoroStatus.Pending:
+					return (
+						<div className='whitespace-nowrap flex items-center gap-1'>
+							<Clock4 className='text-yellow-600' />
+							На рассмотрении
+						</div>
+					)
+				case FluoroStatus.Accepted:
+					return (
+						<div className='whitespace-nowrap flex items-center gap-1'>
+							<ThumbsUp className='text-green-600' />
+							Одобрено
+						</div>
+					)
+				case FluoroStatus.Rejected:
+					return (
+						<div className='whitespace-nowrap flex items-center gap-1'>
+							<ThumbsDown className='text-red-600' />
+							Отклонено
+						</div>
+					)
+				default:
+					return <>Неизвестный статус</>
+			}
+			return <>{fluoroStatus}</>
+		},
+	},
+
+	{
+		accessorKey: 'fluorography.date',
+		header: 'Дата актуальности',
 	},
 	{
-		accessorKey: 'role',
-		header: ({ column }) => {
+		header: () => <div className='text-center'>Отображение</div>,
+		id: 'Show_fluorography',
+		cell: ({ row }) => {
+			const user = row.original
+
 			return (
-				<Button
-					variant='ghost'
-					onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-				>
-					Роль
-					<ArrowUpDown className='ml-2 h-4 w-4' />
-				</Button>
+				<Dialog>
+					<div className='text-center'>
+						<DialogTrigger key={user.id}>
+							<FileImage className='stroke-1' />
+						</DialogTrigger>
+					</div>
+					<DialogContent>
+						<DialogHeader>
+							<DialogTitle>Проверка Флюорографии</DialogTitle>
+							<DialogDescription>
+								<DisplayFluoro UserId={user.id} Data={user.fluorography} />
+							</DialogDescription>
+						</DialogHeader>
+					</DialogContent>
+				</Dialog>
 			)
 		},
 	},

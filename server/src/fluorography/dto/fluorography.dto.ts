@@ -5,7 +5,8 @@ export class FluorographyDto {
 	filePath: string
 
 	@IsString()
-	date: string
+	@IsOptional()
+	date: Date
 
 	@IsOptional()
 	@IsString()

@@ -38,3 +38,10 @@ export async function getServerAuth(): Promise<TUserDataState | null> {
 		return null
 	}
 }
+
+export async function getServerTokens() {
+	let accessToken = cookies().get(EnumTokens.ACCESS_TOKEN)?.value
+	const refreshToken = cookies().get(EnumTokens.REFRESH_TOKEN)?.value
+
+	return { accessToken, refreshToken }
+}

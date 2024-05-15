@@ -8,7 +8,9 @@ import { ITokenInside, UserRole } from './services/auth.types'
 export async function middleware(request: NextRequest, response: NextResponse) {
 	const refreshToken = request.cookies.get(EnumTokens.REFRESH_TOKEN)?.value
 	let accessToken = request.cookies.get(EnumTokens.ACCESS_TOKEN)?.value
-	const isAdminPage = request.url.includes(ADMIN_PAGES.HOME)
+	const isAdminPage =
+		request.url.includes(ADMIN_PAGES.HOME) ||
+		request.url.includes(ADMIN_PAGES.LIST)
 
 	if (!refreshToken) {
 		request.cookies.delete(EnumTokens.ACCESS_TOKEN)
@@ -31,32 +33,38 @@ export async function middleware(request: NextRequest, response: NextResponse) {
 			new TextEncoder().encode(`${process.env.JWT_SECRET}`)
 		)
 
-		if (payload?.role === UserRole.Admin) return NextResponse.next()
+		if (request.url === '/') {
+			return NextResponse.redirect(new URL('/profile', request.url))
+		}
+
+		// Проверка ролей пользователей для доступа к ADMIN_PAGES.LIST
+		if (
+			request.url.includes(ADMIN_PAGES.LIST) &&
+			(payload?.role === UserRole.Curator || payload?.role === UserRole.Admin)
+		) {
+			return NextResponse.next()
+		}
+
+		// Проверка роли администратора для доступа к ADMIN_PAGES.HOME
+		if (
+			request.url.includes(ADMIN_PAGES.HOME) &&
+			payload?.role === UserRole.Admin
+		) {
+			return NextResponse.next()
+		}
 
 		if (isAdminPage) {
-			// console.log('Нет доступа к административной странице')
 			return NextResponse.redirect(new URL('/404', request.url))
 		}
 
 		return NextResponse.next()
 	} catch (error) {
-		// Обработка ошибок, связанных с верификацией JWT
-		if (
-			error instanceof Error &&
-			error.message.includes('exp claim timestamp check failed')
-		) {
-			// Токен истек
-			console.log('Токен истек')
-			return redirectToLogin(isAdminPage, request)
-		}
-
-		console.log('Ошибка при верификации токена: ', error)
-		return redirectToLogin(isAdminPage, request)
+		// Обработка ошибок верификации JWT
 	}
 }
 
 export const config = {
-	matcher: ['/admin/:path*', '/profile/:path*'],
+	matcher: ['/admin/:path*', '/profile/:path*', '/userlist'],
 }
 
 const redirectToLogin = (isAdminPage: boolean, request: NextRequest) => {

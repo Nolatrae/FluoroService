@@ -8,7 +8,7 @@ import { AuthDto } from './dto/auth.dto'
 export class UserService {
 	constructor(private prisma: PrismaService) {}
 
-	async getUsers(withFluorography: boolean = true) {
+	async getUsers() {
 		const select = {
 			id: true,
 			firstName: true,
@@ -20,21 +20,58 @@ export class UserService {
 			password: false,
 		}
 
-		if (withFluorography) {
-			select['Fluorography'] = true
-		} else {
-			select['Fluorography'] = false
-		}
-
 		return this.prisma.user.findMany({
 			select,
 		})
+	}
+
+	async getUsersWithFluoro() {
+		return this.prisma.user.findMany({
+			where: {
+				NOT: {
+					fluorography: null,
+				},
+			},
+			select: {
+				id: true,
+				firstName: true,
+				middleName: true,
+				lastName: true,
+				group: true,
+				fluorography: {
+					select: {
+						id: true,
+						date: true,
+						filePath: true,
+						description: true,
+						status: true,
+					},
+				},
+			},
+		})
+	}
+
+	async getCountUsersWithFluoro(): Promise<number> {
+		const pendingFluorographies = await this.prisma.fluorography.findMany({
+			where: {
+				status: 'PENDING',
+			},
+			select: {
+				userId: true,
+			},
+		})
+
+		const uniqueUserIds = new Set(pendingFluorographies.map(fl => fl.userId))
+		return uniqueUserIds.size
 	}
 
 	async getById(id: string) {
 		return this.prisma.user.findUnique({
 			where: {
 				id,
+			},
+			include: {
+				fluorography: true,
 			},
 		})
 	}

@@ -5,10 +5,26 @@ export interface IUser {
 	id: string
 	email: string
 	firstName: string
-	middleName: string
+	middleName?: string
 	lastName: string
 	role: UserRole
-	group: number
+	group?: string
+	fluorography?: IFluorography
+}
+
+export interface IChangeUserForm {
+	lastName: string
+	firstName: string
+	email: string
+}
+
+export interface IUserFluoro {
+	id: string
+	firstName: string
+	middleName?: string
+	lastName: string
+	group?: string
+	fluorography: IFluorography
 }
 
 export interface IFluorography {
@@ -32,6 +48,15 @@ export interface IFormData extends Pick<IUser, 'email'> {
 	password: string
 }
 
+export interface IRegisterData {
+	email: string
+	firstName: string
+	middleName?: string
+	lastName: string
+	group?: string
+	password: string
+}
+
 export interface IPopupData {
 	id?: string
 	email?: string
@@ -42,11 +67,12 @@ export interface IPopupData {
 }
 
 export interface IUserData {
-	id: string
+	id?: string
 	email: string
 	firstName: string
-	middleName: string
+	middleName?: string
 	lastName: string
+	group?: string
 	role?: UserRole
 }
 

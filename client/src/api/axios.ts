@@ -10,9 +10,17 @@ const axiosOptions: CreateAxiosDefaults = {
 	withCredentials: true,
 }
 
+const axiosOptionsFile: CreateAxiosDefaults = {
+	baseURL: API_URL,
+	// headers: getContentType(),
+	withCredentials: true,
+}
+
 export const axiosClassic = axios.create(axiosOptions)
 
 export const instance = axios.create(axiosOptions)
+
+export const instanceFilePart = axios.create(axiosOptionsFile)
 
 instance.interceptors.request.use(config => {
 	const accessToken = getAccessToken()
