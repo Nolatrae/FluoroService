@@ -8,8 +8,6 @@ export default function Table({ data, adminMenu = false }: any) {
 		return <p>No data</p>
 	}
 
-	console.log(data)
-
 	if (data.Fluorography) {
 		data.forEach(user => {
 			const fluorographyStatus = user.Fluorography.status

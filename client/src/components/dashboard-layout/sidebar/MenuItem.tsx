@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { IMenuItem } from './menu.interface'
+import { IMenuItem } from '../../dashboard-layout-new/sidebar/menu.interface'
 
 export function MenuItem({ item }: { item: IMenuItem }) {
 	return (

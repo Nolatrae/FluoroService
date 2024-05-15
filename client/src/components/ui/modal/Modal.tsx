@@ -26,12 +26,9 @@ const ModalUI: React.FC<UserModalProps> = ({
 
 	// useInitialData(userData, reset)
 
-	console.log(userData)
-
 	const { isPending, mutate } = useUpdateSettings()
 
 	const onSubmit: SubmitHandler<IUserData> = data => {
-		console.log(data)
 		mutate(data)
 	}
 

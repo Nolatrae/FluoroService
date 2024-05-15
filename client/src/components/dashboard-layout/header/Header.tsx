@@ -35,7 +35,7 @@ export function Header() {
 			<div className='flex items-center'>
 				{user && (
 					<button onClick={() => mutateLogout()} disabled={isLogoutPending}>
-						<LogOut className='font-bold ml-4 w-8 h-8' />
+						<LogOut className='font-bold ml-4 w-8 h-8 stroke-1' />
 					</button>
 				)}
 			</div>

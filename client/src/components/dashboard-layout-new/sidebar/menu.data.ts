@@ -6,26 +6,26 @@ import { IMenuItem } from './menu.interface'
 export const MENU: IMenuItem[] = [
 	{
 		icon: LayoutList,
-		link: '/list',
-		name: 'List',
-		role: [UserRole.Admin],
+		link: '/userlist',
+		name: 'Список',
+		role: [UserRole.Admin, UserRole.Curator],
 	},
 	{
 		icon: Mail,
 		link: '/send',
-		name: 'Send fluoro',
-		role: [UserRole.Admin],
+		name: 'Отправить флюрку',
+		role: [UserRole.Student],
 	},
 	{
 		icon: SquareUser,
 		link: '/profile',
-		name: 'Profile',
-		role: [UserRole.Admin, UserRole.User],
+		name: 'Профиль',
+		role: [UserRole.Admin, UserRole.Student, UserRole.Curator],
 	},
 	{
 		icon: Shield,
 		link: '/admin',
-		name: 'Admin panel',
+		name: 'Админ панель',
 		role: [UserRole.Admin],
 	},
 ]

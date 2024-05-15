@@ -3,8 +3,8 @@
 import { useProfile } from '@/hooks/useProfile'
 import { BriefcaseMedical } from 'lucide-react'
 import Link from 'next/link'
+import { MENU } from '../../dashboard-layout-new/sidebar/menu.data'
 import { MenuItem } from './MenuItem'
-import { MENU } from './menu.data'
 
 export function Sidebar() {
 	const { user, isLoading } = useProfile()

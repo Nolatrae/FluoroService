@@ -1,5 +1,5 @@
 ;<template>
-	<div className='flex justify-center w-full min-h-screen p-12 bg-gray-200'>
+	<div className='flex justify-center w-full min-h-screen p-12 bg-background'>
 		<div className='w-64 overflow-y-scroll bg-gray-900 rounded-md'>
 			<div className='px-6 pt-8'>
 				<div className='flex items-center justify-between'>
