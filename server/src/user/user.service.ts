@@ -53,7 +53,7 @@ export class UserService {
 			firstName: dto.firstName,
 			middleName: dto.middleName,
 			lastName: dto.lastName,
-			group: dto.group,
+			group: dto.group
 		}
 
 		return this.prisma.user.create({
